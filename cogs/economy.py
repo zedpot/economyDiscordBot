@@ -298,59 +298,6 @@ class Economy(commands.Cog):
         economy.commit()
         await inter.response.send_message(f"{member.mention} получил {money} монет от {inter.author.mention}")
 
-    # @commands.command()
-    # async def r(self, inter):
-    #     eccur.execute("UPDATE members_%s SET job_time = 0" % (inter.guild.id))
-    #     economy.commit()
-    #     await inter.send("Дата сброшена")
-
-    @commands.command()
-    async def db(self, ctx):
-        guild = ctx.guild
-        try:
-            eccur.execute("INSERT INTO servers(id, name) VALUES (?,?)", (guild.id, guild.name,))
-        except:
-            pass
-        try:
-            eccur.execute('''CREATE TABLE members_%s (
-                                                id      INTEGER NOT NULL UNIQUE,
-                                                bank	INTEGER NOT NULL,
-                                                lvl	    INTEGER NOT NULL,
-                                                expa    INTEGER NOT NULL,
-                                                job     TEXT,
-                                                job_time TEXT,
-                                                PRIMARY KEY("id"))''' % (guild.id))
-        except:
-            pass
-        try:
-            eccur.execute('''CREATE TABLE works_%s (
-                                                id      INTEGER NOT NULL UNIQUE,
-                                                name	TEXT NOT NULL,
-                                                lvl	    INTEGER NOT NULL,
-                                                salary  INTEGER NOT NULL,
-                                                roaster INTEGER,
-                                                PRIMARY KEY("id" AUTOINCREMENT))''' % (guild.id))
-        except:
-            pass
-        try:
-            eccur.execute('''CREATE TABLE shop_%s (
-                                                id      INTEGER NOT NULL UNIQUE,
-                                                name    TEXT NOT NULL,
-                                                type    TEXT NOT NULL,
-                                                value   TEXT NOT NULL,
-                                                cost    INTEGER NOT NULL,
-                                                lvl     INTEGER,
-                                                PRIMARY KEY("id" AUTOINCREMENT))''' % (guild.id))
-        except:
-            pass
-        try:
-            for member in guild.members:
-                eccur.execute("INSERT INTO members_%s(id, bank, lvl, expa) VALUES (?,0,0,0)" % (guild.id),
-                              (member.id,))
-        except:
-            pass
-        economy.commit()
-
 
 def setup(bot: commands.Bot):
     bot.add_cog(Economy(bot))
